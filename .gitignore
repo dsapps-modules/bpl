@@ -1,6 +1,9 @@
 /.phpunit.cache
 /node_modules
 /public/build
+
+# Impeccable downloads a platform-specific engine locally.
+/.agents/skills/impeccable/scripts/bin/
 /public/hot
 /public/storage
 /storage/*.key
