@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BPL Produtos | Limpeza, Higiene e Descartáveis para Condomínios e Empresas</title>
+    <title>BPL Produtos | Limpeza, Higiene e Descartáveis para Condomínios e Empresas</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/bpl_logo_512.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/bpl_logo_512.png') }}">
   <meta name="description" content="Soluções completas em produtos de limpeza, higiene pessoal, descartáveis e equipamentos para condomínios e empresas. Peça seu orçamento!" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
