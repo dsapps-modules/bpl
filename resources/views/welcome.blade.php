@@ -7,53 +7,54 @@
     <link rel="icon" type="image/png" href="{{ asset('images/bpl_logo_512.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/bpl_logo_512.png') }}">
   <meta name="description" content="Soluções completas em produtos de limpeza, higiene pessoal, descartáveis e equipamentos para condomínios e empresas. Peça seu orçamento!" />
-  <script src="https://cdn.tailwindcss.com"></script>
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['Inter', 'sans-serif'] },
-          colors: {
-            brand: {
-              50: '#eff6ff',
-              100: '#dbeafe',
-              500: '#3b82f6',
-              600: '#2563eb',
-              700: '#1d4ed8',
-              800: '#1e40af',
-              900: '#1e3a8a',
-            },
-            accent: {
-              400: '#34d399',
-              500: '#10b981',
-              600: '#059669',
-            },
-            cta: {
-              400: '#fbbf24',
-              500: '#f59e0b',
-              600: '#d97706',
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    html { scroll-behavior: smooth; }
-    .hero-bg {
-      background-image: linear-gradient(rgba(30, 58, 138, 0.85), rgba(5, 150, 105, 0.75)), url('https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=1600&q=80');
-      background-size: cover;
-      background-position: center;
+    :root {
+      --bpl-primary: rgb(89, 85, 209);
+      --bpl-primary-soft: rgb(245, 245, 252);
+      --bpl-navy: rgb(12, 36, 60);
+      --bpl-navy-deep: rgb(41, 41, 75);
+      --bpl-muted: rgb(105, 105, 129);
+      --bpl-border: rgb(238, 238, 243);
+      --bpl-surface: rgb(255, 255, 255);
+      --bpl-canvas: rgb(250, 250, 252);
+      --bpl-success: rgb(0, 153, 102);
+      --bpl-warning: rgb(245, 166, 35);
     }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bpl-canvas); color: var(--bpl-navy); font-family: 'Instrument Sans', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.5; }
+    ::selection { background: var(--bpl-primary-soft); color: var(--bpl-navy-deep); }
+    :focus-visible { outline: 3px solid rgba(89, 85, 209, .45); outline-offset: 3px; }
+    .hero-bg { background-color: var(--bpl-navy); background-image: url('https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=1600&q=80'); background-blend-mode: multiply; }
+    .rounded-2xl { border-radius: 10px; }
+    .rounded-xl { border-radius: 10px; }
+    .rounded-lg { border-radius: 6px; }
+    .shadow-md { box-shadow: 0 5px 10px rgba(2, 2, 76, .02); }
+    .shadow-lg, .shadow-xl { box-shadow: 0 5px 10px rgba(2, 2, 76, .04); }
+    .bg-gray-50 { background-color: var(--bpl-canvas); }
+    .text-gray-700, .text-gray-600 { color: var(--bpl-muted); }
+    .text-gray-800, .text-gray-900 { color: var(--bpl-navy); }
+    [class*="border-gray-"] { border-color: var(--bpl-border); }
+    [class*="hover:-translate-y-1"]:hover { transform: none; }
+    [class*="bg-gradient-"] { background-image: none; }
+    input, textarea { min-height: 52px; border-radius: 6px; border-color: var(--bpl-border); background-color: var(--bpl-surface); color: var(--bpl-navy); }
+    textarea { min-height: 116px; }
+    input::placeholder, textarea::placeholder { color: var(--bpl-muted); }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+    }
+    .hero-bg { background-size: cover; background-position: center; }
   </style>
 </head>
 <body class="font-sans text-gray-800 antialiased">
 
   <!-- HEADER -->
-  <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur shadow-sm">
+  <header class="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16 md:h-20">
         <!-- Logo -->
@@ -63,7 +64,7 @@
         </a>
 
         <!-- Nav Desktop -->
-        <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700">
+        <nav class="hidden lg:flex items-center gap-8 text-sm font-medium text-gray-700">
           <a href="#inicio" class="hover:text-brand-600 transition">Início</a>
           <a href="#produtos" class="hover:text-brand-600 transition">Produtos</a>
           <a href="#vantagens" class="hover:text-brand-600 transition">Vantagens</a>
@@ -72,7 +73,7 @@
         </nav>
 
         <!-- CTA Header -->
-        <a href="https://wa.me/5511997073652?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20BPL%20Produtos." class="bg-cta-500 hover:bg-cta-600 text-white font-semibold px-4 md:px-6 py-2 md:py-2.5 rounded-lg shadow-md transition text-sm md:text-base">
+        <a href="https://wa.me/5511997073652?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20BPL%20Produtos." class="bg-brand-500 hover:bg-brand-700 text-white font-semibold px-3 md:px-6 py-2 md:py-2.5 rounded-lg shadow-md transition text-xs md:text-base whitespace-nowrap">
           Solicitar Orçamento
         </a>
       </div>
@@ -83,9 +84,6 @@
   <section id="inicio" class="hero-bg pt-32 md:pt-40 pb-20 md:pb-28 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-3xl">
-        <span class="inline-block bg-white/20 backdrop-blur-sm text-white text-xs md:text-sm font-semibold px-4 py-1.5 rounded-full mb-6 border border-white/30">
-          Fornecimento B2B para Condomínios e Empresas
-        </span>
         <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
           Soluções Completas em <span class="text-cta-400">Limpeza, Higiene e Descartáveis</span> para o seu Negócio
         </h1>
@@ -93,10 +91,10 @@
           Da faxina pesada à higiene pessoal: tudo em um só lugar, com entrega rápida, produtos de qualidade e preços competitivos para o seu condomínio ou empresa.
         </p>
         <div class="flex flex-col sm:flex-row gap-4">
-          <a href="https://wa.me/5511997073652?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20BPL%20Produtos." class="bg-cta-500 hover:bg-cta-600 text-white font-bold px-8 py-4 rounded-lg shadow-xl transition text-center">
+          <a href="https://wa.me/5511997073652?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20BPL%20Produtos." class="bg-brand-500 hover:bg-brand-700 text-white font-bold px-8 py-4 rounded-lg shadow-xl transition text-center">
             Peça seu Orçamento Agora
           </a>
-          <a href="#produtos" class="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/40 text-white font-semibold px-8 py-4 rounded-lg transition text-center">
+          <a href="#produtos" class="bg-white/10 hover:bg-white/20 border border-white/40 text-white font-semibold px-8 py-4 rounded-lg transition text-center">
             Ver Categorias
           </a>
         </div>
@@ -121,17 +119,16 @@
   </section>
 
   <!-- PRODUTOS -->
-  <section id="produtos" class="py-20 md:py-24 bg-gray-50">
+  <section id="produtos" class="py-12 md:py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-14">
-        <span class="text-accent-600 font-semibold text-sm uppercase tracking-widest">Nossos Produtos</span>
+      <div class="text-center max-w-2xl mx-auto mb-10">
         <h2 class="text-3xl md:text-4xl font-extrabold text-brand-900 mt-3 mb-4">O que você encontra na BPL Produtos</h2>
         <p class="text-gray-600">Tudo o que seu condomínio ou empresa precisa em um único fornecedor.</p>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Card 1 -->
-        <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-300 border-t-4 border-brand-600">
+        <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-300 border border-gray-100">
           <div class="w-14 h-14 bg-brand-50 rounded-xl flex items-center justify-center mb-5">
             <svg class="w-7 h-7 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
           </div>
@@ -140,7 +137,7 @@
         </div>
 
         <!-- Card 2 -->
-        <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-300 border-t-4 border-accent-500">
+        <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-300 border border-gray-100">
           <div class="w-14 h-14 bg-emerald-50 rounded-xl flex items-center justify-center mb-5">
             <svg class="w-7 h-7 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
           </div>
@@ -149,7 +146,7 @@
         </div>
 
         <!-- Card 3 -->
-        <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-300 border-t-4 border-brand-600">
+        <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-300 border border-gray-100">
           <div class="w-14 h-14 bg-brand-50 rounded-xl flex items-center justify-center mb-5">
             <svg class="w-7 h-7 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
           </div>
@@ -158,7 +155,7 @@
         </div>
 
         <!-- Card 4 -->
-        <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-300 border-t-4 border-accent-500">
+        <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-300 border border-gray-100">
           <div class="w-14 h-14 bg-emerald-50 rounded-xl flex items-center justify-center mb-5">
             <svg class="w-7 h-7 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           </div>
@@ -176,10 +173,9 @@
   </section>
 
   <!-- VANTAGENS -->
-  <section id="vantagens" class="py-20 md:py-24 bg-white">
+  <section id="vantagens" class="py-12 md:py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-14">
-        <span class="text-accent-600 font-semibold text-sm uppercase tracking-widest">Vantagens</span>
+      <div class="text-center max-w-2xl mx-auto mb-10">
         <h2 class="text-3xl md:text-4xl font-extrabold text-brand-900 mt-3 mb-4">Por que Condomínios e Empresas escolhem a BPL?</h2>
         <p class="text-gray-600">Reduza custos, simplifique compras e mantenha seu ambiente sempre impecável.</p>
       </div>
@@ -221,31 +217,30 @@
   </section>
 
   <!-- COMO FUNCIONA -->
-  <section id="como-funciona" class="py-20 md:py-24 bg-gradient-to-br from-brand-900 to-accent-600 text-white">
+  <section id="como-funciona" class="py-12 md:py-16 bg-brand-900 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-14">
-        <span class="text-cta-400 font-semibold text-sm uppercase tracking-widest">Como Funciona</span>
+      <div class="text-center max-w-2xl mx-auto mb-10">
         <h2 class="text-3xl md:text-4xl font-extrabold mt-3 mb-4">Solicitar é Fácil</h2>
         <p class="text-blue-100">Em apenas 3 passos você garante os produtos que seu condomínio ou empresa precisa.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
         <div class="text-center">
-          <div class="w-20 h-20 bg-white/15 backdrop-blur border-2 border-white/40 rounded-full flex items-center justify-center mx-auto mb-5 text-3xl font-extrabold">
+          <div class="w-20 h-20 bg-white/15 border-2 border-white/40 rounded-full flex items-center justify-center mx-auto mb-5 text-3xl font-extrabold">
             1
           </div>
           <h3 class="text-xl font-bold mb-2">Envie sua lista</h3>
           <p class="text-blue-100 text-sm">Envie sua lista de produtos ou solicite nosso catálogo completo.</p>
         </div>
         <div class="text-center">
-          <div class="w-20 h-20 bg-white/15 backdrop-blur border-2 border-white/40 rounded-full flex items-center justify-center mx-auto mb-5 text-3xl font-extrabold">
+          <div class="w-20 h-20 bg-white/15 border-2 border-white/40 rounded-full flex items-center justify-center mx-auto mb-5 text-3xl font-extrabold">
             2
           </div>
           <h3 class="text-xl font-bold mb-2">Receba a cotação</h3>
           <p class="text-blue-100 text-sm">Nossa equipe prepara uma cotação personalizada com as melhores condições.</p>
         </div>
         <div class="text-center">
-          <div class="w-20 h-20 bg-white/15 backdrop-blur border-2 border-white/40 rounded-full flex items-center justify-center mx-auto mb-5 text-3xl font-extrabold">
+          <div class="w-20 h-20 bg-white/15 border-2 border-white/40 rounded-full flex items-center justify-center mx-auto mb-5 text-3xl font-extrabold">
             3
           </div>
           <h3 class="text-xl font-bold mb-2">Aprove e receba</h3>
@@ -256,17 +251,16 @@
   </section>
 
   <!-- DEPOIMENTOS -->
-  <section class="py-20 md:py-24 bg-gray-50">
+  <section class="py-12 md:py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-14">
-        <span class="text-accent-600 font-semibold text-sm uppercase tracking-widest">Depoimentos</span>
+      <div class="text-center max-w-2xl mx-auto mb-10">
         <h2 class="text-3xl md:text-4xl font-extrabold text-brand-900 mt-3 mb-4">Quem confia na BPL Produtos</h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-white rounded-2xl p-6 shadow-md">
           <div class="flex text-cta-500 mb-3">
-            ★★★★★
+            <span aria-label="5 de 5 estrelas">Avaliação 5/5</span>
           </div>
           <p class="text-gray-700 italic mb-5">"Reduzi meus fornecedores de limpeza para um só. A entrega é sempre pontual e o atendimento é excelente."</p>
           <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
@@ -280,7 +274,7 @@
 
         <div class="bg-white rounded-2xl p-6 shadow-md">
           <div class="flex text-cta-500 mb-3">
-            ★★★★★
+            <span aria-label="5 de 5 estrelas">Avaliação 5/5</span>
           </div>
           <p class="text-gray-700 italic mb-5">"Preços competitivos e variedade enorme. Nossa equipe de facilities não fica sem nenhum item."</p>
           <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
@@ -294,7 +288,7 @@
 
         <div class="bg-white rounded-2xl p-6 shadow-md">
           <div class="flex text-cta-500 mb-3">
-            ★★★★★
+            <span aria-label="5 de 5 estrelas">Avaliação 5/5</span>
           </div>
           <p class="text-gray-700 italic mb-5">"Atendimento consultivo de verdade. Me ajudaram a escolher os produtos certos e economizei bastante."</p>
           <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
@@ -310,12 +304,11 @@
   </section>
 
   <!-- CONTATO -->
-  <section id="contato" class="py-20 md:py-24 bg-white">
+  <section id="contato" class="py-12 md:py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         <!-- Info -->
         <div>
-          <span class="text-accent-600 font-semibold text-sm uppercase tracking-widest">Contato</span>
           <h2 class="text-3xl md:text-4xl font-extrabold text-brand-900 mt-3 mb-5">Solicite um Orçamento sem Compromisso</h2>
           <p class="text-gray-600 mb-8 leading-relaxed">
             Preencha o formulário ao lado e nossa equipe entrará em contato rapidamente com uma cotação personalizada. Atendemos condomínios, empresas, escritórios, indústrias e restaurantes.
@@ -389,7 +382,7 @@
                 class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-brand-600 focus:ring-2 focus:ring-brand-100 outline-none transition"></textarea>
             </div>
 
-            <button type="submit" class="w-full bg-cta-500 hover:bg-cta-600 text-white font-bold px-6 py-3.5 rounded-lg shadow-md transition">
+            <button type="submit" class="w-full bg-brand-500 hover:bg-brand-700 text-white font-bold px-6 py-3.5 rounded-lg shadow-md transition">
               Enviar Pedido de Orçamento
             </button>
             <p class="text-xs text-gray-500 text-center">Responderemos o mais rápido possível pelo WhatsApp.</p>
@@ -429,9 +422,9 @@
         <div>
           <h3 class="font-bold mb-4">Siga a BPL</h3>
           <div class="flex gap-3">
-            <a href="#" aria-label="Instagram a configurar" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition">◎</a>
-            <a href="#" aria-label="Facebook a configurar" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition">f</a>
-            <a href="https://wa.me/5511997073652" target="_blank" rel="noopener" aria-label="WhatsApp BPL" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition">☏</a>
+            <a href="#" aria-label="Instagram a configurar" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition"><span aria-hidden="true">IG</span></a>
+            <a href="#" aria-label="Facebook a configurar" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition"><span aria-hidden="true">FB</span></a>
+            <a href="https://wa.me/5511997073652" target="_blank" rel="noopener" aria-label="WhatsApp BPL" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition"><span aria-hidden="true">WA</span></a>
           </div>
         </div>
       </div>
