@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-19T00:00:00-03:00",
+  "title": "Design System: NexLink MVP",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Indigo de ação", "canonical": "rgb(89, 85, 209)" },
+      "navy": { "role": "neutral", "displayName": "Navy estrutural", "canonical": "rgb(12, 36, 60)" },
+      "text-muted": { "role": "neutral", "displayName": "Cinza de leitura", "canonical": "rgb(105, 105, 129)" },
+      "border": { "role": "neutral", "displayName": "Borda névoa", "canonical": "rgb(238, 238, 243)" },
+      "success": { "role": "secondary", "displayName": "Verde sucesso", "canonical": "rgb(0, 153, 102)" },
+      "danger": { "role": "secondary", "displayName": "Vermelho perigo", "canonical": "rgb(255, 59, 64)" }
+    },
+    "breakpoints": [
+      { "name": "mobile", "value": "320px" },
+      { "name": "tablet", "value": "768px" },
+      { "name": "desktop", "value": "1024px" },
+      { "name": "wide", "value": "1440px" }
+    ],
+    "shadows": [
+      { "name": "card-ambient", "value": "0 5px 10px rgba(2, 2, 76, 0.02)", "purpose": "Separação sutil de cards sobre canvas claro." },
+      { "name": "menu-lift", "value": "0 5px 10px rgba(0, 0, 0, 0.05)", "purpose": "Elevação de dropdowns, popovers e menus." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ação principal indigo com alvo de toque confortável.",
+      "html": "<button class=\"ds-btn-primary\">Save Changes</button>",
+      "css": ".ds-btn-primary { background: rgb(89, 85, 209); color: rgb(255, 255, 255); padding: 12px 20px; min-height: 44px; border: 0; border-radius: 6px; font: 500 14px/1.4 'Instrument Sans', Arial, sans-serif; transition: background-color .2s ease, box-shadow .2s ease; } .ds-btn-primary:hover { background: rgb(41, 41, 75); } .ds-btn-primary:focus-visible { outline: 3px solid rgba(89, 85, 209, .35); outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Campo branco com borda clara e foco indigo.",
+      "html": "<input class=\"ds-input\" aria-label=\"Email\" placeholder=\"example@mail.com\" />",
+      "css": ".ds-input { width: 100%; height: 52px; padding: 0 16px; background: rgb(255, 255, 255); color: rgb(105, 105, 129); border: 1px solid rgb(238, 238, 243); border-radius: 6px; font: 400 16px/1.5 'Instrument Sans', Arial, sans-serif; } .ds-input:focus-visible { border-color: rgb(89, 85, 209); outline: 3px solid rgba(89, 85, 209, .18); outline-offset: 1px; }"
+    },
+    {
+      "name": "Status Chip",
+      "kind": "chip",
+      "refersTo": "chip-status",
+      "description": "Badge compacto que combina cor e texto semântico.",
+      "html": "<span class=\"ds-chip-success\">Active</span>",
+      "css": ".ds-chip-success { display: inline-flex; align-items: center; min-height: 32px; padding: 8px 12px; background: rgba(0, 153, 102, .08); color: rgb(0, 153, 102); border-radius: 999px; font: 500 14px/1.4 'Instrument Sans', Arial, sans-serif; }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Superfície branca para KPIs, gráficos, tabelas e configurações.",
+      "html": "<section class=\"ds-card\"><h2>Revenue</h2><p>$2,56,054.50</p></section>",
+      "css": ".ds-card { padding: 24px; background: rgb(255, 255, 255); color: rgb(12, 36, 60); border: 1px solid rgb(238, 238, 243); border-radius: 10px; box-shadow: 0 5px 10px rgba(2, 2, 76, .02); } .ds-card h2 { margin: 0 0 8px; font: 700 18px/1.3 'Instrument Sans', Arial, sans-serif; }"
+    },
+    {
+      "name": "Navigation Item",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Item de sidebar com estado ativo indigo e área de toque acessível.",
+      "html": "<a class=\"ds-nav-item\" href=\"#\"><span aria-hidden=\"true\">◈</span> Customers</a>",
+      "css": ".ds-nav-item { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 10px 12px; color: rgb(12, 36, 60); border-radius: 6px; text-decoration: none; font: 500 16px/1.5 'Instrument Sans', Arial, sans-serif; } .ds-nav-item:hover, .ds-nav-item:focus-visible { color: rgb(89, 85, 209); background: rgb(245, 245, 252); } .ds-nav-item:focus-visible { outline: 3px solid rgba(89, 85, 209, .25); outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Quiet control room",
+    "overview": "O NexLink é uma interface operacional para CRM: densa o suficiente para permitir leitura e comparação rápidas, mas organizada por superfícies claras, bordas discretas e acentos indigo usados como orientação. As telas anexadas são a autoridade visual do MVP.",
+    "keyCharacteristics": ["Shell administrativo com sidebar, topbar e área de conteúdo independente.", "Cards brancos, bordas claras, raio moderado e espaçamento consistente.", "Mobile-first, com prioridade para leitura, toque, rolagem controlada e redução progressiva da densidade."],
+    "rules": [
+      { "name": "The MVP Authority Rule", "body": "Quando uma decisão nova entrar em conflito com as imagens anexadas, preserve a estrutura, densidade, cores, hierarquia e comportamento percebidos nas telas do MVP.", "section": "overview" },
+      { "name": "The Mobile-First Truth Rule", "body": "O layout mobile não é uma versão desktop espremida: é a especificação de prioridade do produto.", "section": "layout" },
+      { "name": "The Accent Rarity Rule", "body": "Indigo e cores semânticas devem orientar decisões; não devem preencher indiscriminadamente fundos, textos longos ou todos os controles da tela.", "section": "colors" }
+    ],
+    "dos": ["Do tratar as quatro imagens anexadas como referência visual primária para o MVP.", "Do reutilizar shell, topbar, sidebar, card, table, input, dialog, badge, avatar e pagination.", "Do implementar mobile-first e testar pelo menos em 320px, 768px, 1024px e 1440px."],
+    "donts": ["Don't criar uma estética paralela: sem novos gradientes, paletas, fontes, raios ou sombras sem justificativa.", "Don't permitir overflow horizontal da página.", "Don't depender apenas de cor para status, feedback, erro ou seleção."]
+  }
+}
