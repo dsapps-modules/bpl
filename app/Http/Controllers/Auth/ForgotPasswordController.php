@@ -22,23 +22,24 @@ class ForgotPasswordController extends Controller
         $request->validate(['email' => ['required', 'email']]);
 
         $email = $request->string('email')->toString();
+        $user = User::query()->where('email', $email)->first();
+
+        if ($user === null) {
+            return back()
+                ->withErrors(['email' => __('passwords.user')])
+                ->withInput();
+        }
 
         if (app()->isLocal()) {
-            $user = User::query()->where('email', $email)->first();
+            $token = Password::broker()->createToken($user);
+            $user->sendPasswordResetNotification($token);
 
-            if ($user !== null) {
-                $token = Password::broker()->createToken($user);
-                $user->sendPasswordResetNotification($token);
-
-                return back()
-                    ->with('status', __('passwords.sent'))
-                    ->with('password_reset_url', URL::route('password.reset', [
-                        'token' => $token,
-                        'email' => $user->email,
-                    ]));
-            }
-
-            return back()->with('status', __('passwords.sent'));
+            return back()
+                ->with('status', __('passwords.sent'))
+                ->with('password_reset_url', URL::route('password.reset', [
+                    'token' => $token,
+                    'email' => $user->email,
+                ]));
         }
 
         $status = Password::sendResetLink(['email' => $email]);

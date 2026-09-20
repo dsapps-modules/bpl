@@ -4,10 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Permission;
 use App\Models\Role;
-use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,25 +21,28 @@ class DatabaseSeeder extends Seeder
             $role['name'] => Role::updateOrCreate(['name' => $role['name']], $role),
         ]);
 
-        $dashboardPermission = Permission::updateOrCreate(['name' => 'dashboard.view'], [
-            'label' => 'Visualizar dashboard',
-            'page' => 'dashboard',
+        $permissions = collect([
+            ['name' => 'dashboard.view', 'label' => 'Visualizar dashboard', 'page' => 'dashboard'],
+            ['name' => 'crm.contacts.manage', 'label' => 'Gerenciar contatos', 'page' => 'contacts'],
+            ['name' => 'crm.companies.manage', 'label' => 'Gerenciar empresas', 'page' => 'companies'],
+            ['name' => 'crm.pipelines.manage', 'label' => 'Gerenciar funis', 'page' => 'pipelines'],
+            ['name' => 'crm.opportunities.manage', 'label' => 'Gerenciar oportunidades', 'page' => 'opportunities'],
+            ['name' => 'crm.tasks.manage', 'label' => 'Gerenciar tarefas', 'page' => 'tasks'],
+            ['name' => 'crm.calendar.manage', 'label' => 'Gerenciar agenda', 'page' => 'calendar'],
+            ['name' => 'crm.teams.manage', 'label' => 'Gerenciar equipes', 'page' => 'teams'],
+            ['name' => 'crm.tags.manage', 'label' => 'Gerenciar tags', 'page' => 'tags'],
+            ['name' => 'crm.fields.manage', 'label' => 'Gerenciar campos personalizados', 'page' => 'custom-fields'],
+            ['name' => 'crm.segments.manage', 'label' => 'Gerenciar segmentos', 'page' => 'segments'],
+            ['name' => 'crm.inbox.manage', 'label' => 'Gerenciar inbox', 'page' => 'inbox'],
+            ['name' => 'crm.automations.manage', 'label' => 'Gerenciar automações', 'page' => 'automations'],
+            ['name' => 'crm.reports.view', 'label' => 'Visualizar relatórios', 'page' => 'reports'],
+            ['name' => 'crm.email_marketing.manage', 'label' => 'Gerenciar campanhas de e-mail', 'page' => 'email-campaigns'],
+        ])->mapWithKeys(fn (array $permission): array => [
+            $permission['name'] => Permission::updateOrCreate(['name' => $permission['name']], $permission),
         ]);
 
-        $roles->each(fn (Role $role) => $role->permissions()->syncWithoutDetaching([$dashboardPermission->id]));
+        $roles->each(fn (Role $role) => $role->permissions()->syncWithoutDetaching([$permissions['dashboard.view']->id]));
 
-        foreach ([
-            ['name' => 'Reginaldo do Prado', 'email' => 'reginaldodoprado@gmail.com', 'role' => 'superadmin'],
-            ['name' => 'Keila BPL Produtos', 'email' => 'keila@bplprodutos.com.br', 'role' => 'admin'],
-            ['name' => 'Ellen BPL Produtos', 'email' => 'ellen@bplprodutos.com.br', 'role' => 'colaborador'],
-        ] as $account) {
-            $user = User::updateOrCreate(['email' => $account['email']], [
-                'name' => $account['name'],
-                'password' => Hash::make(Str::random(64)),
-                'email_verified_at' => now(),
-            ]);
-
-            $user->roles()->sync([$roles[$account['role']]->id]);
-        }
+        $this->call(UserSeeder::class);
     }
 }

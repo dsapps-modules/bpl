@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8b0281f8ec4aeca62fcfb26a52135001",
+    "content-hash": "b7f7db2a4ac0c90f9d0ce88428e16882",
     "packages": [
         {
             "name": "brick/math",
@@ -445,6 +445,63 @@
                 }
             ],
             "time": "2025-10-31T18:51:33+00:00"
+        },
+        {
+            "name": "dsapps/laravel-crm",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dsapps-modules/laravel-crm.git",
+                "reference": "4455a4712d688243760cf4ea778b3f18431ebb7a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dsapps-modules/laravel-crm/zipball/4455a4712d688243760cf4ea778b3f18431ebb7a",
+                "reference": "4455a4712d688243760cf4ea778b3f18431ebb7a",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^11.0|^12.0",
+                "illuminate/database": "^11.0|^12.0",
+                "illuminate/http": "^11.0|^12.0",
+                "illuminate/routing": "^11.0|^12.0",
+                "illuminate/support": "^11.0|^12.0",
+                "illuminate/validation": "^11.0|^12.0",
+                "laravel/framework": "^11.0|^12.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^10.0",
+                "phpunit/phpunit": "^11.5"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "DsApps\\LaravelCrm\\CrmServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "DsApps\\LaravelCrm\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "CRM comercial e de relacionamento reutilizável para Laravel.",
+            "support": {
+                "source": "https://github.com/dsapps-modules/laravel-crm/tree/main",
+                "issues": "https://github.com/dsapps-modules/laravel-crm/issues"
+            },
+            "time": "2026-09-20T20:12:10+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -8675,7 +8732,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {},
+    "stability-flags": {
+        "dsapps/laravel-crm": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

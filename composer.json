@@ -5,9 +5,16 @@
     "description": "The skeleton application for the Laravel framework.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/dsapps-modules/laravel-crm.git"
+        }
+    ],
     "require": {
         "php": "^8.2",
         "laravel/framework": "^12.0",
+        "dsapps/laravel-crm": "dev-main",
         "laravel/tinker": "^2.10.1"
     },
     "require-dev": {

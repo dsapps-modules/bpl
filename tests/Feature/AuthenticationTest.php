@@ -13,6 +13,13 @@ class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withoutMiddleware(ValidateCsrfToken::class);
+    }
+
     public function test_guest_can_see_login_and_protected_route_redirects_to_login(): void
     {
         $this->get('/login')->assertOk();
@@ -44,11 +51,23 @@ class AuthenticationTest extends TestCase
         Notification::assertSentTo($user, ResetPassword::class);
     }
 
+    public function test_password_reset_request_reports_when_email_is_not_registered(): void
+    {
+        $response = $this->from(route('password.request'))->post(route('password.email'), [
+            'email' => 'nao-encontrado@example.com',
+        ]);
+
+        $response->assertRedirect(route('password.request'));
+        $response->assertSessionHasErrors([
+            'email' => 'Não encontramos um usuário com esse endereço de e-mail.',
+        ]);
+        $response->assertSessionMissing('password_reset_url');
+    }
+
     public function test_local_password_reset_request_exposes_the_reset_link_in_the_browser_console(): void
     {
         Notification::fake();
         $this->app['env'] = 'local';
-        $this->withoutMiddleware(ValidateCsrfToken::class);
         $user = User::factory()->create();
 
         $response = $this->from(route('password.request'))->post(route('password.email'), [
@@ -70,7 +89,6 @@ class AuthenticationTest extends TestCase
     {
         Notification::fake();
         $this->app['env'] = 'production';
-        $this->withoutMiddleware(ValidateCsrfToken::class);
         $user = User::factory()->create();
 
         $response = $this->from(route('password.request'))->post(route('password.email'), [
