@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'brevo' => [
+        'webhook_token' => env('CRM_EMAIL_BREVO_WEBHOOK_TOKEN'),
+    ],
+
 ];

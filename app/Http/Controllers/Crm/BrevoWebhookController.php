@@ -4,23 +4,26 @@ namespace App\Http\Controllers\Crm;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class BrevoWebhookController extends Controller
 {
-    public function __invoke(Request $request): JsonResponse
+    public function transactional(): JsonResponse
     {
-        Log::info('Brevo webhook received.', [
-            'method' => $request->method(),
-            'url' => $request->fullUrl(),
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent(),
-            'headers' => $request->headers->all(),
-            'query' => $request->query(),
-            'payload' => $request->getContent(),
-        ]);
+        return $this->acknowledge();
+    }
 
+    public function inbound(): JsonResponse
+    {
+        return $this->acknowledge();
+    }
+
+    public function marketing(): JsonResponse
+    {
+        return $this->acknowledge();
+    }
+
+    private function acknowledge(): JsonResponse
+    {
         return response()->json(['received' => true]);
     }
 }
