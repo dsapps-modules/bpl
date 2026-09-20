@@ -16,7 +16,7 @@ class BrevoWebhookTest extends TestCase
 
         $response = $this->call(
             'POST',
-            '/api/crm/v1/webhooks/brevo/account-123?source=brevo',
+            '/api/crm/v1/webhooks/brevo?source=brevo',
             [],
             [],
             [],
@@ -34,8 +34,7 @@ class BrevoWebhookTest extends TestCase
             ->with(
                 'Brevo webhook received.',
                 Mockery::on(function (array $context) use ($payload): bool {
-                    return $context['channel_account'] === 'account-123'
-                        && $context['method'] === 'POST'
+                    return $context['method'] === 'POST'
                         && $context['query'] === ['source' => 'brevo']
                         && $context['payload'] === $payload;
                 }),

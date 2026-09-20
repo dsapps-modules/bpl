@@ -9,10 +9,9 @@ use Illuminate\Support\Facades\Log;
 
 class BrevoWebhookController extends Controller
 {
-    public function __invoke(Request $request, string $channelAccount): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
         Log::info('Brevo webhook received.', [
-            'channel_account' => $channelAccount,
             'method' => $request->method(),
             'url' => $request->fullUrl(),
             'ip' => $request->ip(),
