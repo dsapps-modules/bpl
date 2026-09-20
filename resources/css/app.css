@@ -2,9 +2,9 @@
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
-@source "../**/*.blade.php";
-@source "../**/*.js";
-@source "../**/*.vue";
+@source "resources/views/**/*.blade.php";
+@source "resources/js/**/*.js";
+@source "resources/**/*.vue";
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
@@ -23,4 +23,23 @@
     --color-cta-400: #f7bf5d;
     --color-cta-500: #f5a623;
     --color-cta-600: #c98512;
+}
+
+@layer components {
+    .auth-shell {
+        background-color: #f5f5fc;
+    }
+
+    .auth-visual {
+        background-color: #0c243c;
+    }
+
+    .auth-visual-panel {
+        background-color: rgb(12 36 60 / 56%);
+    }
+
+    .auth-card {
+        box-shadow: 0 20px 55px rgb(12 36 60 / 12%);
+    }
+
 }
