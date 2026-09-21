@@ -42,6 +42,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $roles->each(fn (Role $role) => $role->permissions()->syncWithoutDetaching([$permissions['dashboard.view']->id]));
+        $roles['admin']->permissions()->syncWithoutDetaching($permissions->except('dashboard.view')->pluck('id')->all());
+        $this->call(GrantCrmPermissionsToCollaboratorsSeeder::class);
 
         $this->call(UserSeeder::class);
     }

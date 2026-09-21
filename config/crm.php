@@ -1,11 +1,15 @@
 <?php
 
+use App\Http\Middleware\DemoReadOnly;
 use App\Support\CrmAuthorizationResolver;
 
 return [
+    'demo' => [
+        'enabled' => (bool) env('CRM_DEMO_MODE', false),
+    ],
     'api' => [
         'prefix' => env('CRM_API_PREFIX', 'api/crm/v1'),
-        'middleware' => ['crm-api', 'auth'],
+        'middleware' => ['crm-api', 'auth', DemoReadOnly::class],
     ],
     'table_prefix' => env('CRM_TABLE_PREFIX', 'crm_'),
     'user_model' => env('CRM_USER_MODEL', 'App\\Models\\User'),

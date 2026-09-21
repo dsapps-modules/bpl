@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -37,5 +38,22 @@ class AuthorizationTest extends TestCase
         $user->roles()->attach($role);
 
         $this->actingAs($user)->get(route('dashboard'))->assertOk();
+    }
+
+    public function test_database_seeder_grants_all_crm_permissions_to_colaboradores(): void
+    {
+        $this->seed(DatabaseSeeder::class);
+
+        $colaborador = Role::query()->where('name', 'colaborador')->firstOrFail();
+        $crmPermissions = Permission::query()->where('name', 'like', 'crm.%')->pluck('id');
+
+        $assignedCrmPermissions = $colaborador->permissions()
+            ->whereIn('permissions.id', $crmPermissions)
+            ->pluck('permissions.id')
+            ->sort()
+            ->values()
+            ->all();
+
+        $this->assertSame($crmPermissions->sort()->values()->all(), $assignedCrmPermissions);
     }
 }

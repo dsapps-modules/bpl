@@ -21,11 +21,28 @@ class CrmApiWriteTest extends TestCase
                 'first_name' => 'Ana',
                 'last_name' => 'Silva',
                 'email' => 'ana@example.test',
+                'document_type' => 'cpf',
+                'document' => '529.982.247-25',
+                'postal_code' => '01001-000',
+                'street' => 'Praça da Sé',
+                'number' => '100',
+                'district' => 'Sé',
+                'city' => 'São Paulo',
+                'state' => 'sp',
             ])
             ->assertCreated()
-            ->assertJsonPath('data.first_name', 'Ana');
+            ->assertJsonPath('data.first_name', 'Ana')
+            ->assertJsonPath('data.document', '52998224725')
+            ->assertJsonPath('data.postal_code', '01001000')
+            ->assertJsonPath('data.state', 'SP');
 
-        $this->assertDatabaseHas('crm_contacts', ['email' => 'ana@example.test']);
+        $this->assertDatabaseHas('crm_contacts', [
+            'email' => 'ana@example.test',
+            'document_type' => 'cpf',
+            'document' => '52998224725',
+            'postal_code' => '01001000',
+            'state' => 'SP',
+        ]);
     }
 
     public function test_crm_api_rejects_contact_creation_without_permission(): void

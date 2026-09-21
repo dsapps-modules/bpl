@@ -132,7 +132,36 @@ const setupNavigation = () => {
     backdrop.addEventListener('click', close);
 };
 
+const setupUserMenu = () => {
+    const root = document.querySelector('[data-crm-user-menu]');
+    const toggle = root?.querySelector('[data-crm-user-menu-toggle]');
+    const panel = root?.querySelector('[data-crm-user-menu-panel]');
+    if (!root || !toggle || !panel) return;
+
+    const close = () => {
+        panel.classList.add('hidden');
+        toggle.setAttribute('aria-expanded', 'false');
+    };
+
+    toggle.addEventListener('click', () => {
+        const isOpen = !panel.classList.toggle('hidden');
+        toggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!root.contains(event.target)) close();
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !panel.classList.contains('hidden')) {
+            close();
+            toggle.focus();
+        }
+    });
+};
+
 setupNavigation();
+setupUserMenu();
 
 if (state.root) {
     state.root.querySelector('[data-crm-retry]').addEventListener('click', loadDashboard);
