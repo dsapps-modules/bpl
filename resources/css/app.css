@@ -146,12 +146,20 @@
     .crm-stage { background-color: #f6f7f3; border-radius: 0.625rem; min-height: 11rem; padding: 0.75rem; }
     .crm-stage-header { align-items: center; color: #6f7a76; display: flex; font-size: 0.72rem; font-weight: 800; justify-content: space-between; margin-bottom: 0.625rem; text-transform: uppercase; }
     .crm-stage-count { background-color: #18211f; border-radius: 999px; color: #fff; font-size: 0.68rem; padding: 0.1875rem 0.4375rem; }
-    .crm-opportunity-card { background-color: #fff; border: 1px solid #dfe5df; border-radius: 0.5rem; display: grid; gap: 0.5rem; margin-bottom: 0.5rem; padding: 0.75rem; }
+    .crm-opportunity-card { background-color: #fff; border: 1px solid #dfe5df; border-radius: 0.5rem; display: grid; gap: 0.5rem; margin-bottom: 0.5rem; padding: 0.75rem; position: relative; }
+    .crm-opportunity-card[draggable="true"] { cursor: grab; }
+    .crm-opportunity-card[draggable="true"]:active { cursor: grabbing; }
+    .crm-opportunity-card-dragging { opacity: 0.45; }
+    .crm-opportunity-edit { align-items: center; border-radius: 0.375rem; color: #64748b; display: inline-flex; height: 2rem; justify-content: center; position: absolute; right: 0.5rem; top: 0.5rem; width: 2rem; }
+    .crm-opportunity-edit:hover { background-color: #f5f5fc; color: #4945b5; }
+    .crm-opportunity-edit svg { height: 1rem; width: 1rem; }
+    .crm-opportunity-card strong { padding-right: 2rem; }
     .crm-opportunity-card strong { color: #18211f; font-size: 0.78rem; line-height: 1.3; }
     .crm-opportunity-card small { color: #2e8b7d; font-size: 0.72rem; font-weight: 800; }
 
     .crm-board { display: grid; gap: 0.75rem; grid-template-columns: repeat(4, minmax(15rem, 1fr)); min-width: 64rem; }
     .crm-board-column { background-color: #f6f7f3; border-radius: 0.75rem; min-height: 18rem; padding: 0.875rem; }
+    .crm-board-column-drag-over { background-color: #ecebfa; outline: 2px dashed #5955d1; outline-offset: -2px; }
     .crm-board-column .crm-stage-header { margin-bottom: 0.75rem; }
     .crm-board-column .crm-stage-header h2 { color: #6f7a76; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; }
 

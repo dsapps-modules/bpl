@@ -1,7 +1,7 @@
 const pipelineRoot = document.querySelector('[data-crm-pipeline-page]');
 
 if (pipelineRoot) {
-    const state = { pipelines: [], opportunities: [], selectedPipeline: null };
+    const state = { pipelines: [], opportunities: [], selectedPipeline: null, draggedOpportunity: null };
     const base = pipelineRoot.dataset.apiBase;
     const dialog = pipelineRoot.querySelector('[data-opportunity-dialog]');
     const form = pipelineRoot.querySelector('[data-opportunity-form]');
@@ -18,30 +18,33 @@ if (pipelineRoot) {
         const opportunities = state.opportunities.filter((item) => item.pipeline_id === pipeline.id);
         board.innerHTML = pipeline.stages.map((stage) => {
             const items = opportunities.filter((item) => item.pipeline_stage_id === stage.id);
-            return `<section class="crm-board-column" aria-labelledby="pipeline-stage-${stage.id}"><div class="crm-stage-header"><h2 id="pipeline-stage-${stage.id}">${escapeHtml(stage.name)}</h2><b class="crm-stage-count">${items.length}</b></div>${items.length ? items.map((item) => `<article class="crm-opportunity-card"><strong>${escapeHtml(item.title)}</strong><small>${money(item.amount, item.currency)}</small><span class="text-xs text-slate-500">Versão ${item.version}</span><div class="mt-1 flex gap-2"><button type="button" data-edit-opportunity="${item.id}" class="text-left text-xs font-bold text-brand-700 hover:underline">Editar</button><label class="sr-only" for="move-${item.id}">Mover ${escapeHtml(item.title)}</label><select id="move-${item.id}" data-move-opportunity="${item.id}" data-version="${item.version}" class="min-h-9 flex-1 rounded-md border border-slate-200 bg-white px-2 text-xs text-slate-600"><option value="">Mover para...</option>${pipeline.stages.filter((destination) => destination.id !== item.pipeline_stage_id).map((destination) => `<option value="${destination.id}">${escapeHtml(destination.name)}</option>`).join('')}</select></div></article>`).join('') : '<p class="crm-empty-state text-xs">Nenhum negócio nesta etapa.</p>'}</section>`;
+            return `<section class="crm-board-column" data-drop-stage="${stage.id}" aria-labelledby="pipeline-stage-${stage.id}"><div class="crm-stage-header"><h2 id="pipeline-stage-${stage.id}">${escapeHtml(stage.name)}</h2><b class="crm-stage-count">${items.length}</b></div>${items.length ? items.map((item) => `<article class="crm-opportunity-card" draggable="true" data-drag-opportunity="${item.id}" data-version="${item.version}" aria-label="${escapeHtml(item.title)}. Arraste para mover de etapa."><button type="button" data-edit-opportunity="${item.id}" class="crm-opportunity-edit" aria-label="Editar ${escapeHtml(item.title)}" title="Editar oportunidade"><svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m13.7 3.2 3.1 3.1M4 16l.7-3.5L13.7 3.5a1.8 1.8 0 0 1 2.6 0l.2.2a1.8 1.8 0 0 1 0 2.6l-9 9L4 16Z"/></svg></button><strong>${escapeHtml(item.title)}</strong><small>${money(item.amount, item.currency)}</small></article>`).join('') : '<p class="crm-empty-state text-xs">Nenhum negócio nesta etapa.</p>'}</section>`;
         }).join('');
-        board.querySelectorAll('[data-move-opportunity]').forEach((control) => control.addEventListener('change', () => move(control)));
         board.querySelectorAll('[data-edit-opportunity]').forEach((button) => button.addEventListener('click', () => openEdit(button.dataset.editOpportunity)));
+        board.querySelectorAll('[data-drag-opportunity]').forEach((card) => {
+            card.addEventListener('dragstart', (event) => startDragging(card, event));
+            card.addEventListener('dragend', () => stopDragging(card));
+        });
+        board.querySelectorAll('[data-drop-stage]').forEach((column) => {
+            column.addEventListener('dragover', (event) => allowDrop(column, event));
+            column.addEventListener('dragleave', () => column.classList.remove('crm-board-column-drag-over'));
+            column.addEventListener('drop', (event) => dropOpportunity(column, event));
+        });
     };
-    const move = async (control) => {
-        const opportunityId = control.dataset.moveOpportunity;
-        const stageId = control.value;
-        if (!stageId) return;
-        control.disabled = true;
+    const startDragging = (card, event) => { state.draggedOpportunity = { id: card.dataset.dragOpportunity, version: card.dataset.version }; card.classList.add('crm-opportunity-card-dragging'); event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', card.dataset.dragOpportunity); };
+    const stopDragging = (card) => { card.classList.remove('crm-opportunity-card-dragging'); state.draggedOpportunity = null; pipelineRoot.querySelectorAll('[data-drop-stage]').forEach((column) => column.classList.remove('crm-board-column-drag-over')); };
+    const allowDrop = (column, event) => { if (!state.draggedOpportunity) return; event.preventDefault(); event.dataTransfer.dropEffect = 'move'; column.classList.add('crm-board-column-drag-over'); };
+    const dropOpportunity = async (column, event) => { event.preventDefault(); column.classList.remove('crm-board-column-drag-over'); if (!state.draggedOpportunity) return; const dragged = state.draggedOpportunity; state.draggedOpportunity = null; const opportunity = state.opportunities.find((item) => item.id === Number(dragged.id)); if (!opportunity || opportunity.pipeline_stage_id === Number(column.dataset.dropStage)) return; await moveOpportunity(dragged.id, column.dataset.dropStage, dragged.version); };
+    const moveOpportunity = async (opportunityId, stageId, version) => {
         try {
-            const response = await fetch(`${base}/opportunities/${opportunityId}/move/${stageId}?version=${control.dataset.version}`, { method: 'POST', headers: { Accept: 'application/json' } });
+            const response = await fetch(`${base}/opportunities/${opportunityId}/move/${stageId}?version=${version}`, { method: 'POST', headers: { Accept: 'application/json' } });
             const payload = await response.json();
             if (!response.ok) {
-                if (response.status === 409) {
-                    await loadOpportunities();
-                    feedback('Este negócio foi alterado por outra pessoa. O quadro foi atualizado.', 'error');
-                    throw new Error('__pipeline_conflict__');
-                }
+                if (response.status === 409) { await loadOpportunities(); feedback('Este negócio foi alterado por outra pessoa. O quadro foi atualizado.', 'error'); return; }
                 throw new Error(errorMessage(payload));
             }
-            feedback('Oportunidade movida com sucesso.');
             await loadOpportunities();
-        } catch (error) { if (error.message !== '__pipeline_conflict__') feedback(error.message, 'error'); } finally { control.disabled = false; }
+        } catch (error) { feedback(error.message, 'error'); }
     };
     const loadOpportunities = async () => {
         const response = await fetch(`${base}/opportunities?status=open&per_page=100`);
