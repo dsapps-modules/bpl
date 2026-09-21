@@ -72,10 +72,17 @@
           <a href="https://wa.me/5511997073652?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20BPL%20Produtos." class="hover:text-brand-600 transition">Contato</a>
         </nav>
 
-        <!-- CTA Header -->
-        <a href="https://wa.me/5511997073652?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20BPL%20Produtos." class="bg-brand-500 hover:bg-brand-700 text-white font-semibold px-3 md:px-6 py-2 md:py-2.5 rounded-lg shadow-md transition text-xs md:text-base whitespace-nowrap">
-          Solicitar Orçamento
-        </a>
+        <!-- Ações do Header -->
+        <div class="flex items-center gap-2 md:gap-3">
+          <a href="{{ route('login') }}" aria-label="Acessar área do cliente" title="Acessar área do cliente" class="inline-flex items-center justify-center w-11 h-11 rounded-lg text-brand-800 hover:bg-brand-50 hover:text-brand-500 transition">
+            <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.75 7.5a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.5 20.25a7.5 7.5 0 0 1 15 0" />
+            </svg>
+          </a>
+          <a href="https://wa.me/5511997073652?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20BPL%20Produtos." class="bg-brand-500 hover:bg-brand-700 text-white font-semibold px-3 md:px-6 py-2 md:py-2.5 rounded-lg shadow-md transition text-xs md:text-base whitespace-nowrap">
+            Solicitar Orçamento
+          </a>
+        </div>
       </div>
     </div>
   </header>
