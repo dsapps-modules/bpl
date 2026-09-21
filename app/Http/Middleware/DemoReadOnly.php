@@ -22,7 +22,7 @@ class DemoReadOnly
         }
 
         return new JsonResponse([
-            'message' => 'Esta ação está disponível somente após a contratação do sistema.',
+            'message' => 'Não foi possível concluir esta ação.',
         ], Response::HTTP_FORBIDDEN);
     }
 }

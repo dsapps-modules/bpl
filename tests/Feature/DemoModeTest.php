@@ -65,7 +65,7 @@ class DemoModeTest extends TestCase
         $this->actingAs($user)
             ->postJson('/api/crm/v1/tasks', ['title' => 'Não deve ser salvo'])
             ->assertForbidden()
-            ->assertJsonPath('message', 'Esta ação está disponível somente após a contratação do sistema.');
+            ->assertJsonPath('message', 'Não foi possível concluir esta ação.');
 
         $this->assertDatabaseCount('crm_tasks', 0);
     }
