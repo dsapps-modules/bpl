@@ -69,7 +69,7 @@
           <a href="#produtos" class="hover:text-brand-600 transition">Produtos</a>
           <a href="#vantagens" class="hover:text-brand-600 transition">Vantagens</a>
           <a href="#como-funciona" class="hover:text-brand-600 transition">Como Funciona</a>
-          <a href="https://wa.me/5511997073652?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20BPL%20Produtos." class="hover:text-brand-600 transition">Contato</a>
+          <a href="https://wa.me/5511917747238?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20BPL%20Produtos." class="hover:text-brand-600 transition">Contato</a>
         </nav>
 
         <!-- Ações do Header -->
@@ -79,7 +79,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.75 7.5a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.5 20.25a7.5 7.5 0 0 1 15 0" />
             </svg>
           </a>
-          <a href="https://wa.me/5511997073652?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20BPL%20Produtos." class="bg-brand-500 hover:bg-brand-700 text-white font-semibold px-3 md:px-6 py-2 md:py-2.5 rounded-lg shadow-md transition text-xs md:text-base whitespace-nowrap">
+          <a href="https://wa.me/5511917747238?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20BPL%20Produtos." class="bg-brand-500 hover:bg-brand-700 text-white font-semibold px-3 md:px-6 py-2 md:py-2.5 rounded-lg shadow-md transition text-xs md:text-base whitespace-nowrap">
             Solicitar Orçamento
           </a>
         </div>
@@ -98,7 +98,7 @@
           Da faxina pesada à higiene pessoal: tudo em um só lugar, com entrega rápida, produtos de qualidade e preços competitivos para o seu condomínio ou empresa.
         </p>
         <div class="flex flex-col sm:flex-row gap-4">
-          <a href="https://wa.me/5511997073652?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20BPL%20Produtos." class="bg-brand-500 hover:bg-brand-700 text-white font-bold px-8 py-4 rounded-lg shadow-xl transition text-center">
+          <a href="https://wa.me/5511917747238?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20BPL%20Produtos." class="bg-brand-500 hover:bg-brand-700 text-white font-bold px-8 py-4 rounded-lg shadow-xl transition text-center">
             Peça seu Orçamento Agora
           </a>
           <a href="#produtos" class="bg-white/10 hover:bg-white/20 border border-white/40 text-white font-semibold px-8 py-4 rounded-lg transition text-center">
@@ -172,7 +172,7 @@
       </div>
 
       <div class="text-center mt-12">
-        <a href="https://wa.me/5511997073652?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20BPL%20Produtos." class="inline-block bg-brand-700 hover:bg-brand-800 text-white font-semibold px-8 py-3.5 rounded-lg shadow-md transition">
+        <a href="https://wa.me/5511917747238?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20BPL%20Produtos." class="inline-block bg-brand-700 hover:bg-brand-800 text-white font-semibold px-8 py-3.5 rounded-lg shadow-md transition">
           Solicitar Tabela de Preços
         </a>
       </div>
@@ -328,7 +328,7 @@
               </div>
               <div>
                 <div class="font-semibold text-brand-900">Telefone / WhatsApp</div>
-                <div class="text-gray-600">+55 11 99707-3652</div>
+                <div class="text-gray-600">+55 11 917747238</div>
               </div>
             </div>
 
@@ -421,7 +421,7 @@
         <div>
           <h3 class="font-bold mb-4">Fale Conosco</h3>
           <ul class="space-y-2 text-blue-200 text-sm">
-            <li><a href="https://wa.me/5511997073652" target="_blank" rel="noopener" class="hover:text-white transition">WhatsApp: +55 11 99707-3652</a></li>
+            <li><a href="https://wa.me/5511917747238" target="_blank" rel="noopener" class="hover:text-white transition">WhatsApp: +55 11 917747238</a></li>
             <li>E-mail comercial a confirmar</li>
             <li>Endereço comercial a confirmar</li>
           </ul>
@@ -431,7 +431,7 @@
           <div class="flex gap-3">
             <a href="#" aria-label="Instagram a configurar" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition"><span aria-hidden="true">IG</span></a>
             <a href="#" aria-label="Facebook a configurar" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition"><span aria-hidden="true">FB</span></a>
-            <a href="https://wa.me/5511997073652" target="_blank" rel="noopener" aria-label="WhatsApp BPL" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition"><span aria-hidden="true">WA</span></a>
+            <a href="https://wa.me/5511917747238" target="_blank" rel="noopener" aria-label="WhatsApp BPL" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition"><span aria-hidden="true">WA</span></a>
           </div>
         </div>
       </div>
@@ -454,7 +454,7 @@
         'Empresa ou condomínio: ' + data.get('empresa'),
         'Mensagem: ' + (data.get('mensagem') || 'A definir'),
       ].join('\n');
-      window.open('https://wa.me/5511997073652?text=' + encodeURIComponent(message), '_blank', 'noopener');
+      window.open('https://wa.me/5511917747238?text=' + encodeURIComponent(message), '_blank', 'noopener');
     });
   </script>
 </body>
