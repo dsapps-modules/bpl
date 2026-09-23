@@ -15,9 +15,13 @@ class DemoReadOnly
             return $next($request);
         }
 
-        $contactsPath = trim((string) config('crm.api.prefix'), '/').'/contacts';
+        $apiPrefix = trim((string) config('crm.api.prefix'), '/');
+        $path = trim($request->path(), '/');
+        $resource = str_starts_with($path, $apiPrefix.'/')
+            ? explode('/', substr($path, strlen($apiPrefix) + 1), 2)[0]
+            : null;
 
-        if ($request->isMethod('POST') && trim($request->path(), '/') === $contactsPath) {
+        if ($resource !== null && config("crm.demo.writes.{$resource}", false)) {
             return $next($request);
         }
 

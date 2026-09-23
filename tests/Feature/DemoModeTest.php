@@ -69,4 +69,22 @@ class DemoModeTest extends TestCase
 
         $this->assertDatabaseCount('crm_tasks', 0);
     }
+
+    public function test_demo_user_can_enable_task_writes_without_enabling_company_writes(): void
+    {
+        config(['crm.demo.writes.tasks' => true]);
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->postJson('/api/crm/v1/tasks', ['title' => 'Retornar para cliente'])
+            ->assertCreated();
+
+        $this->assertDatabaseCount('crm_tasks', 1);
+
+        $this->actingAs($user)
+            ->postJson('/api/crm/v1/companies', ['name' => 'Empresa bloqueada'])
+            ->assertForbidden();
+
+        $this->assertDatabaseCount('crm_companies', 0);
+    }
 }

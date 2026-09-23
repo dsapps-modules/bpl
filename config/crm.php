@@ -6,6 +6,21 @@ use App\Support\CrmAuthorizationResolver;
 return [
     'demo' => [
         'enabled' => (bool) env('CRM_DEMO_MODE', false),
+        'writes' => [
+            'contacts' => (bool) env('CRM_DEMO_ALLOW_CONTACTS', true),
+            'companies' => (bool) env('CRM_DEMO_ALLOW_COMPANIES', false),
+            'pipelines' => (bool) env('CRM_DEMO_ALLOW_PIPELINES', false),
+            'opportunities' => (bool) env('CRM_DEMO_ALLOW_OPPORTUNITIES', false),
+            'tasks' => (bool) env('CRM_DEMO_ALLOW_TASKS', false),
+            'calendar-events' => (bool) env('CRM_DEMO_ALLOW_CALENDAR_EVENTS', false),
+            'teams' => (bool) env('CRM_DEMO_ALLOW_TEAMS', false),
+            'tags' => (bool) env('CRM_DEMO_ALLOW_TAGS', false),
+            'custom-fields' => (bool) env('CRM_DEMO_ALLOW_CUSTOM_FIELDS', false),
+            'segments' => (bool) env('CRM_DEMO_ALLOW_SEGMENTS', false),
+            'conversations' => (bool) env('CRM_DEMO_ALLOW_CONVERSATIONS', false),
+            'automations' => (bool) env('CRM_DEMO_ALLOW_AUTOMATIONS', false),
+            'email-campaigns' => (bool) env('CRM_DEMO_ALLOW_EMAIL_CAMPAIGNS', false),
+        ],
     ],
     'api' => [
         'prefix' => env('CRM_API_PREFIX', 'api/crm/v1'),
