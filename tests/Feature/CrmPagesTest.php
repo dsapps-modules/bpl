@@ -65,7 +65,41 @@ class CrmPagesTest extends TestCase
             ->get(route('crm.tasks'))
             ->assertOk()
             ->assertSee('Tarefas')
-            ->assertSee('Nova tarefa');
+            ->assertSee('Nova tarefa')
+            ->assertSeeInOrder([
+                'Acompanhamento de Entrega',
+                'Acompanhamento de Proposta',
+                'Apresentação Comercial',
+                'Cobrança',
+                'Cross-sell',
+                'Demonstração do Produto',
+                'Elaboração de Proposta',
+                'Envio de Documentação',
+                'Envio de Proposta',
+                'Fechamento da Venda',
+                'Formalização do Contrato',
+                'Follow Up',
+                'Levantamento de Necessidades',
+                'Negociação',
+                'Onboarding',
+                'Pesquisa de Satisfação',
+                'Pós-venda',
+                'Primeiro Contato',
+                'Qualificação do Lead',
+                'Reativação de Cliente',
+                'Recuperação de Oportunidade',
+                'Relacionamento',
+                'Renovação',
+                'Reunião Comercial',
+                'Retorno Agendado',
+                'Solicitação de Documentação',
+                'Solicitação de Indicação',
+                'Tentativa de Contato',
+                'Treinamento',
+                'Tratamento de Reclamação',
+                'Upsell',
+                'Visita Comercial',
+            ]);
     }
 
     public function test_user_with_calendar_permission_can_open_calendar_page(): void
