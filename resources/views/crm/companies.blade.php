@@ -1,7 +1,6 @@
 <x-layouts.crm title="Empresas" eyebrow="Relacionamento">
     <section class="mx-auto max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8" data-crm-companies data-api-base="{{ $crmApiBase }}" data-directory-api-base="{{ $crmDirectoryApiBase }}">
-        <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div><h1 class="text-3xl font-bold tracking-tight text-slate-900">Empresas</h1><p class="mt-3 max-w-2xl text-base text-slate-500">Cadastre empresas e mantenha todos os contatos relacionados em um só lugar.</p></div>
+        <div class="flex justify-end">
             <button type="button" data-company-open-form class="inline-flex min-h-11 items-center justify-center rounded-lg bg-slate-900 px-5 text-sm font-bold text-white transition hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">+ Nova empresa</button>
         </div>
         <div class="mt-8 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_5px_10px_rgba(2,2,76,0.02)] sm:p-5"><form class="flex flex-col gap-3 sm:flex-row" data-company-search><label class="sr-only" for="company-search">Buscar empresas</label><input id="company-search" name="search" type="search" placeholder="Buscar por nome, razão social ou e-mail" class="min-h-11 flex-1 rounded-lg border border-slate-300 px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-100"><button type="submit" class="min-h-11 rounded-lg border border-slate-300 px-5 text-sm font-bold text-slate-700 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700">Buscar</button></form></div>
