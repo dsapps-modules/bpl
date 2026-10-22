@@ -14,12 +14,14 @@ class CrmPageController extends Controller
         if ($slug === 'contacts') {
             return view('crm.contacts', [
                 'crmApiBase' => url('/api/crm/v1'),
+                'crmDirectoryApiBase' => url('/api/crm/v1/directory'),
             ]);
         }
 
         if ($slug === 'companies') {
             return view('crm.companies', [
                 'crmApiBase' => url('/api/crm/v1'),
+                'crmDirectoryApiBase' => url('/api/crm/v1/directory'),
             ]);
         }
 

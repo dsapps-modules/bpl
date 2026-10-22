@@ -1,77 +1,45 @@
 const companyRoot = document.querySelector('[data-crm-companies]');
 
 if (companyRoot) {
-    const state = { page: 1, search: '', lastPage: 1 };
-    const base = companyRoot.dataset.apiBase;
+    const state = { page: 1, search: '', lastPage: 1, contacts: [] };
+    const directoryBase = companyRoot.dataset.directoryApiBase;
     const dialog = companyRoot.querySelector('[data-company-dialog]');
     const form = companyRoot.querySelector('[data-company-form]');
     const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]);
+    const digits = (value) => String(value || '').replace(/\D/g, '');
+    const errorMessage = (payload) => Object.values(payload?.errors || {}).flat()[0] || payload?.message || 'Verifique os dados e tente novamente.';
     const showState = (name) => companyRoot.querySelectorAll('[data-company-list-state]').forEach((element) => element.classList.toggle('hidden', element.dataset.companyListState !== name));
     const setFeedback = (message, tone = 'success') => { const target = companyRoot.querySelector('[data-company-feedback]'); target.className = `mt-4 rounded-lg p-3 text-sm ${tone === 'error' ? 'bg-red-50 text-red-700' : 'bg-emerald-50 text-emerald-700'}`; target.textContent = message; target.classList.remove('hidden'); };
-    const errorMessage = (payload) => Object.values(payload?.errors || {}).flat()[0] || payload?.message || 'Verifique os dados e tente novamente.';
-    const load = async () => {
-        showState('loading');
-        try {
-            const query = new URLSearchParams({ per_page: '15', page: String(state.page) });
-            if (state.search) query.set('search', state.search);
-            const response = await fetch(`${base}/companies?${query}`);
-            const payload = await response.json();
-            if (!response.ok) throw new Error(errorMessage(payload));
-            const companies = payload.data || [];
-            companyRoot.querySelector('[data-company-rows]').innerHTML = companies.length ? companies.map((company) => `<tr class="hover:bg-slate-50"><td class="whitespace-nowrap px-5 py-4 font-semibold text-slate-800">${escapeHtml(company.name)}</td><td class="whitespace-nowrap px-5 py-4 text-slate-600">${escapeHtml(company.legal_name || '—')}</td><td class="whitespace-nowrap px-5 py-4 text-slate-600">${escapeHtml(company.email || '—')}</td><td class="whitespace-nowrap px-5 py-4 text-slate-600">${escapeHtml(company.phone || '—')}</td><td class="whitespace-nowrap px-5 py-4 text-right"><button type="button" data-edit-company="${company.id}" class="mr-3 font-semibold text-brand-700 hover:underline">Editar</button><button type="button" data-archive-company="${company.id}" class="font-semibold text-red-700 hover:underline">Arquivar</button></td></tr>`).join('') : '<tr><td colspan="5" class="px-5 py-12 text-center text-slate-500">Nenhuma empresa encontrada. Adicione a primeira empresa para começar.</td></tr>';
-            state.lastPage = payload.last_page || 1;
-            companyRoot.querySelector('[data-company-summary]').textContent = payload.total ? `Exibindo ${payload.from}–${payload.to} de ${payload.total}` : 'Nenhum resultado';
-            companyRoot.querySelector('[data-company-prev]').disabled = state.page <= 1;
-            companyRoot.querySelector('[data-company-next]').disabled = state.page >= state.lastPage;
-            companyRoot.querySelectorAll('[data-edit-company]').forEach((button) => button.addEventListener('click', () => openEdit(button.dataset.editCompany)));
-            companyRoot.querySelectorAll('[data-archive-company]').forEach((button) => button.addEventListener('click', () => archive(button.dataset.archiveCompany)));
-            showState('content');
-        } catch (error) { companyRoot.querySelector('[data-company-error]').textContent = error.message; showState('error'); }
+    const request = async (url, options = {}) => { const response = await fetch(url, { ...options, headers: { Accept: 'application/json', ...(options.headers || {}) } }); const payload = response.status === 204 ? null : await response.json(); if (!response.ok) throw new Error(errorMessage(payload)); return payload; };
+    const contactName = (contact) => [contact.first_name, contact.last_name].filter(Boolean).join(' ');
+    const renderContacts = () => {
+        const list = companyRoot.querySelector('[data-company-contact-list]');
+        const empty = companyRoot.querySelector('[data-company-contact-empty]');
+        empty.classList.toggle('hidden', state.contacts.length > 0);
+        list.innerHTML = state.contacts.map((contact, index) => `<div class="grid gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 sm:grid-cols-[1.2fr_1fr_1.2fr_auto]" data-company-contact-row data-index="${index}"><input aria-label="Nome do contato" data-contact-name value="${escapeHtml(contact.name || contactName(contact))}" placeholder="Nome do contato" class="min-h-10 rounded-lg border border-slate-300 bg-white px-3 text-sm"><input aria-label="Celular do contato" data-contact-phone value="${escapeHtml(contact.phone || '')}" placeholder="Celular" class="min-h-10 rounded-lg border border-slate-300 bg-white px-3 text-sm"><input aria-label="E-mail do contato" data-contact-email value="${escapeHtml(contact.email || '')}" placeholder="E-mail" type="email" class="min-h-10 rounded-lg border border-slate-300 bg-white px-3 text-sm"><button type="button" data-remove-company-contact class="min-h-10 rounded-lg px-3 text-sm font-bold text-red-700 hover:bg-red-50">Remover</button></div>`).join('');
+        list.querySelectorAll('[data-company-contact-row]').forEach((row) => row.querySelectorAll('input').forEach((input) => input.addEventListener('input', () => { const contact = state.contacts[Number(row.dataset.index)]; contact[input.dataset.contactName !== undefined ? 'name' : input.dataset.contactPhone !== undefined ? 'phone' : 'email'] = input.value; })));
+        list.querySelectorAll('[data-remove-company-contact]').forEach((button) => button.addEventListener('click', async () => {
+            const index = Number(button.closest('[data-company-contact-row]').dataset.index);
+            const contact = state.contacts[index];
+            try {
+                if (contact.id) {
+                    const parts = String(contact.name || contactName(contact)).trim().split(/\s+/);
+                    await request(`${directoryBase}/contacts/${contact.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ first_name: parts.shift() || 'Contato', last_name: parts.join(' '), email: contact.email || null, phone: contact.phone || null, company_id: null }) });
+                }
+                state.contacts.splice(index, 1);
+                renderContacts();
+            } catch (error) {
+                setFeedback(error.message, 'error');
+            }
+        }));
     };
-    companyRoot.querySelector('[data-company-search]').addEventListener('submit', (event) => { event.preventDefault(); state.search = new FormData(event.currentTarget).get('search').trim(); state.page = 1; load(); });
-    companyRoot.querySelector('[data-company-retry]').addEventListener('click', load);
-    companyRoot.querySelector('[data-company-prev]').addEventListener('click', () => { if (state.page > 1) { state.page -= 1; load(); } });
-    companyRoot.querySelector('[data-company-next]').addEventListener('click', () => { if (state.page < state.lastPage) { state.page += 1; load(); } });
-    const openCreate = () => { form.reset(); form.dataset.companyId = ''; companyRoot.querySelector('[data-company-form-title]').textContent = 'Adicionar empresa'; companyRoot.querySelector('[data-company-submit]').textContent = 'Salvar empresa'; dialog.showModal(); };
-    const openEdit = async (id) => {
-        try {
-            const response = await fetch(`${base}/companies/${id}`);
-            const payload = await response.json();
-            if (!response.ok) throw new Error(errorMessage(payload));
-            const company = payload.data || payload;
-            form.dataset.companyId = company.id;
-            form.elements.name.value = company.name || '';
-            form.elements.legal_name.value = company.legal_name || '';
-            form.elements.email.value = company.email || '';
-            form.elements.phone.value = company.phone || '';
-            companyRoot.querySelector('[data-company-form-title]').textContent = 'Editar empresa';
-            companyRoot.querySelector('[data-company-submit]').textContent = 'Salvar alterações';
-            dialog.showModal();
-        } catch (error) { setFeedback(error.message, 'error'); }
-    };
-    const archive = async (id) => {
-        if (!window.confirm('Arquivar esta empresa? Ela deixará de aparecer nas listas ativas.')) return;
-        try {
-            const response = await fetch(`${base}/companies/${id}`, { method: 'DELETE', headers: { Accept: 'application/json' } });
-            if (!response.ok) throw new Error(errorMessage(await response.json()));
-            setFeedback('Empresa arquivada.');
-            await load();
-        } catch (error) { setFeedback(error.message, 'error'); }
-    };
-    companyRoot.querySelector('[data-company-open-form]').addEventListener('click', openCreate);
-    companyRoot.querySelectorAll('[data-company-close]').forEach((button) => button.addEventListener('click', () => dialog.close()));
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const submit = form.querySelector('button[type="submit"]');
-        submit.disabled = true;
-        companyRoot.querySelector('[data-company-form-error]').classList.add('hidden');
-        try {
-            const companyId = form.dataset.companyId;
-            const response = await fetch(`${base}/companies${companyId ? `/${companyId}` : ''}`, { method: companyId ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(Object.fromEntries(new FormData(form))) });
-            const payload = await response.json();
-            if (!response.ok) throw new Error(errorMessage(payload));
-            form.reset(); dialog.close(); setFeedback(companyId ? 'Empresa atualizada com sucesso.' : 'Empresa criada com sucesso.'); state.page = 1; await load();
-        } catch (error) { const target = companyRoot.querySelector('[data-company-form-error]'); target.textContent = error.message; target.classList.remove('hidden'); } finally { submit.disabled = false; }
-    });
-    load();
+    const resetForm = () => { form.reset(); form.elements.document_type.value = 'cnpj'; form.elements.country.value = 'BR'; form.dataset.companyId = ''; state.contacts = []; renderContacts(); };
+    const fillForm = (company) => { form.dataset.companyId = company.id; Object.entries(company).forEach(([name, value]) => { if (form.elements[name] && name !== 'contacts') form.elements[name].value = value || ''; }); state.contacts = (company.contacts || []).map((contact) => ({ ...contact, name: contactName(contact) })); renderContacts(); };
+    const load = async () => { showState('loading'); try { const query = new URLSearchParams({ per_page: '15', page: String(state.page) }); if (state.search) query.set('search', state.search); const payload = await request(`${directoryBase}/companies?${query}`); const companies = payload.data || []; companyRoot.querySelector('[data-company-rows]').innerHTML = companies.length ? companies.map((company) => `<tr class="hover:bg-slate-50"><td class="whitespace-nowrap px-5 py-4 font-semibold text-slate-800">${escapeHtml(company.name)}</td><td class="whitespace-nowrap px-5 py-4 text-slate-600">${escapeHtml(company.legal_name || '—')}</td><td class="whitespace-nowrap px-5 py-4 text-slate-600">${escapeHtml(company.email || '—')}</td><td class="whitespace-nowrap px-5 py-4 text-slate-600">${escapeHtml(company.phone || '—')}</td><td class="whitespace-nowrap px-5 py-4 text-right"><button type="button" data-edit-company="${company.id}" class="mr-3 font-semibold text-brand-700 hover:underline">Editar</button><button type="button" data-archive-company="${company.id}" class="font-semibold text-red-700 hover:underline">Arquivar</button></td></tr>`).join('') : '<tr><td colspan="5" class="px-5 py-12 text-center text-slate-500">Nenhuma empresa encontrada.</td></tr>'; state.lastPage = payload.last_page || 1; companyRoot.querySelector('[data-company-summary]').textContent = payload.total ? `Exibindo ${payload.from}–${payload.to} de ${payload.total}` : 'Nenhum resultado'; companyRoot.querySelector('[data-company-prev]').disabled = state.page <= 1; companyRoot.querySelector('[data-company-next]').disabled = state.page >= state.lastPage; companyRoot.querySelectorAll('[data-edit-company]').forEach((button) => button.addEventListener('click', () => openEdit(button.dataset.editCompany))); companyRoot.querySelectorAll('[data-archive-company]').forEach((button) => button.addEventListener('click', () => archive(button.dataset.archiveCompany))); showState('content'); } catch (error) { companyRoot.querySelector('[data-company-error]').textContent = error.message; showState('error'); } };
+    const openEdit = async (id) => { try { const payload = await request(`${directoryBase}/companies/${id}`); fillForm(payload.data || payload); companyRoot.querySelector('[data-company-form-title]').textContent = 'Editar empresa'; companyRoot.querySelector('[data-company-submit]').textContent = 'Salvar alterações'; dialog.showModal(); } catch (error) { setFeedback(error.message, 'error'); } };
+    const openCreate = () => { resetForm(); companyRoot.querySelector('[data-company-form-title]').textContent = 'Adicionar empresa'; companyRoot.querySelector('[data-company-submit]').textContent = 'Salvar empresa'; dialog.showModal(); };
+    const archive = async (id) => { if (!window.confirm('Arquivar esta empresa?')) return; try { await request(`${directoryBase}/companies/${id}`, { method: 'DELETE', headers: { Accept: 'application/json' } }); setFeedback('Empresa arquivada.'); await load(); } catch (error) { setFeedback(error.message, 'error'); } };
+    const saveContact = async (contact, companyId) => { const parts = String(contact.name || '').trim().split(/\s+/); if (!parts[0]) return; const payload = { first_name: parts.shift(), last_name: parts.join(' '), email: contact.email || null, phone: contact.phone || null, company_id: companyId }; await request(`${directoryBase}/contacts${contact.id ? `/${contact.id}` : ''}`, { method: contact.id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload) }); };
+    const saveCompany = async (event) => { event.preventDefault(); const submit = form.querySelector('[data-company-submit]'); submit.disabled = true; companyRoot.querySelector('[data-company-form-error]').classList.add('hidden'); try { const companyId = form.dataset.companyId; const payload = Object.fromEntries(new FormData(form)); payload.document = digits(payload.document); payload.postal_code = digits(payload.postal_code); payload.state = String(payload.state || '').toUpperCase(); const response = await request(`${directoryBase}/companies${companyId ? `/${companyId}` : ''}`, { method: companyId ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload) }); const saved = response.data || response; await Promise.all(state.contacts.map((contact) => saveContact(contact, saved.id))); form.reset(); dialog.close(); setFeedback(companyId ? 'Empresa atualizada com sucesso.' : 'Empresa criada com sucesso.'); state.page = 1; await load(); } catch (error) { const target = companyRoot.querySelector('[data-company-form-error]'); target.textContent = error.message; target.classList.remove('hidden'); } finally { submit.disabled = false; } };
+    companyRoot.querySelector('[data-company-search]').addEventListener('submit', (event) => { event.preventDefault(); state.search = new FormData(event.currentTarget).get('search').trim(); state.page = 1; load(); }); companyRoot.querySelector('[data-company-retry]').addEventListener('click', load); companyRoot.querySelector('[data-company-prev]').addEventListener('click', () => { if (state.page > 1) { state.page -= 1; load(); } }); companyRoot.querySelector('[data-company-next]').addEventListener('click', () => { if (state.page < state.lastPage) { state.page += 1; load(); } }); companyRoot.querySelector('[data-company-open-form]').addEventListener('click', openCreate); companyRoot.querySelectorAll('[data-company-close]').forEach((button) => button.addEventListener('click', () => dialog.close())); companyRoot.querySelector('[data-add-company-contact]').addEventListener('click', () => { state.contacts.push({ name: '', phone: '', email: '' }); renderContacts(); }); form.addEventListener('submit', saveCompany); renderContacts(); load();
 }
