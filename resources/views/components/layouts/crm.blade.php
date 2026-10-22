@@ -37,7 +37,7 @@
                     <img src="{{ asset('images/bpl_logo_512.png') }}" alt="" class="h-10 w-10 rounded-xl object-contain">
                     <div><p class="text-sm font-bold tracking-tight text-slate-900">BPL Produtos</p><p class="text-xs text-slate-500">CRM comercial</p></div>
                 </div>
-                <p class="mt-3 text-xs text-slate-500">{{ now()->translatedFormat('d \d\e F \d\e Y') }}</p>
+                <p class="mt-3 text-xs text-slate-500">{{ now()->locale('pt_BR')->translatedFormat('d \d\e F \d\e Y') }}</p>
             </div>
             <nav class="flex-1 overflow-y-auto px-3 py-5">
                 <p class="px-3 pb-2 text-[0.68rem] font-bold uppercase tracking-[0.16em] text-slate-400">Operação</p>
